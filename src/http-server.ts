@@ -288,25 +288,29 @@ export async function startFixedHTTPServer() {
     }
     
     // Extract token and trim whitespace
-    const token = authHeader.slice(7).trim();
-    
-    // Check if token matches
-    if (token !== authToken) {
-      logger.warn('Authentication failed: Invalid token', { 
-        ip: req.ip,
-        userAgent: req.get('user-agent'),
-        reason: 'invalid_token'
-      });
-      res.status(401).json({ 
-        jsonrpc: '2.0',
-        error: {
-          code: -32001,
-          message: 'Unauthorized'
-        },
-        id: null
-      });
-      return;
-    }
+const token = authHeader.slice(7).trim();
+
+// DEBUG: log both tokens
+console.log('GELEN HEADER TOKEN:', token);
+console.log('ENV TOKEN:', authToken);
+
+// Check if token matches
+if (token !== authToken) {
+  logger.warn('Authentication failed: Invalid token', { 
+    ip: req.ip,
+    userAgent: req.get('user-agent'),
+    reason: 'invalid_token'
+  });
+  res.status(401).json({ 
+    jsonrpc: '2.0',
+    error: {
+      code: -32001,
+      message: 'Unauthorized'
+    },
+    id: null
+  });
+  return;
+}
     
     try {
       // Instead of using StreamableHTTPServerTransport, we'll handle the request directly
@@ -538,4 +542,4 @@ if (require.main === module) {
     console.error('Failed to start Fixed HTTP server:', error);
     process.exit(1);
   });
-}
+}  
