@@ -30,7 +30,7 @@ RUN apk add --no-cache curl && \
     rm -rf /var/cache/apk/*
 
 # Copy runtime-only package.json
-COPY package.runtime.json package.json
+COPY package.json package.json
 
 # Install runtime dependencies with cache mount
 RUN --mount=type=cache,target=/root/.npm \
